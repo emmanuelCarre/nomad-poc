@@ -1,4 +1,10 @@
-bind_addr="{{ ansible_ssh_host }}"
+bind_addr="0.0.0.0"
+
+advertise {
+    http = "{{ ansible_ssh_host }}"
+    rpc = "{{ ansible_ssh_host }}"
+    serf = "{{ ansible_ssh_host }}"
+}
 
 # Increase log verbosity
 log_level = "DEBUG"

@@ -24,6 +24,8 @@
     src: server.hcl
     dest: /etc/nomad/server.hcl
   when: nomad_master
+  notify:
+    - nomad - releod service
 
 - name: add client configuration
   become: true
@@ -31,10 +33,12 @@
     src: client.hcl
     dest: /etc/nomad/client.hcl
   when: not nomad_master
+  notify:
+    - nomad - releod service
 
 - name: add service configuration
   become: true
-  register: nomad_service_config
+  register: _nomad_service_config
   copy:
     src: nomad.service
     dest: /etc/systemd/system
@@ -45,4 +49,4 @@
     daemon_reload: yes
     name: nomad
     state: restarted
-  when: nomad_service_config.changed 
+  when: _nomad_service_config.changed 
