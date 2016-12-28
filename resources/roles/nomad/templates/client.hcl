@@ -1,3 +1,11 @@
+bind_addr="0.0.0.0"
+
+advertise {
+    http = "{{ ansible_ssh_host }}"
+    rpc = "{{ ansible_ssh_host }}"
+    serf = "{{ ansible_ssh_host }}"
+}
+
 data_dir="/tmp/nomad"
 
 client {
