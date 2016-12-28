@@ -69,11 +69,22 @@ Vagrant.configure("2") do |config|
   #   apt-get install -y apache2
   # SHELL
   config.vm.provider "virtualbox" do |vb|
-        vb.memory = "1024"
+    vb.memory = "1024"
   end
-  
-  config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "playbook.yml"
+
+  N = 5
+  VAGRANT_VM_PROVIDER = "virtualbox"
+  ANSIBLE_RAW_SSH_ARGS = []
+
+  (1..N).each do |machine_id|
+    config.vm.define "machine#{machine_id}" do |machine|
+      machine.vm.hostname = "machine-#{machine_id}"
+      machine.vm.network "private_network", ip: "192.168.77.#{20+machine_id}"
+        machine.vm.provision :ansible do |ansible|
+          ansible.playbook = "./resources/playbook.yml"
+          ansible.inventory_path = "./resources/inventory"
+      end
+    end
   end
 
 end

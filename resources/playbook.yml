@@ -1,0 +1,19 @@
+---
+- hosts: all
+  vars:
+    packages:
+      - unzip
+      - wget
+      - vim
+      - curl
+  pre_tasks:
+    - include: base.yml
+  roles:
+    - role: docker
+    - role: nomad
+
+# - hosts: masters
+#   vars:
+#     consul_version: 0.7.1
+#   tasks:
+#     - include: consul.yml

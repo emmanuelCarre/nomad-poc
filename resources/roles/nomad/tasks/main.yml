@@ -1,0 +1,48 @@
+---
+# tasks file for nomad
+- name: download nomad
+  get_url:
+    url: "https://releases.hashicorp.com/nomad/{{ nomad_version }}/nomad_{{ nomad_version }}_linux_amd64.zip"
+    dest: "/tmp/nomad_{{ nomad_version }}_linux_amd64.zip"
+
+- name: install nomad
+  become: true
+  unarchive:
+    src: "/tmp/nomad_{{ nomad_version }}_linux_amd64.zip"
+    dest: /usr/local/bin/
+    remote_src: True
+
+- name: create configuration folder
+  become: true
+  file:
+    path: /etc/nomad
+    state: directory
+
+- name: add server configuration
+  become: true
+  template:
+    src: server.hcl
+    dest: /etc/nomad/server.hcl
+  when: nomad_master
+
+- name: add client configuration
+  become: true
+  template:
+    src: client.hcl
+    dest: /etc/nomad/client.hcl
+  when: not nomad_master
+
+- name: add service configuration
+  become: true
+  register: nomad_service_config
+  copy:
+    src: nomad.service
+    dest: /etc/systemd/system
+
+- name: releod systemd configuration
+  become: true
+  systemd:
+    daemon_reload: yes
+    name: nomad
+    state: restarted
+  when: nomad_service_config.changed 

@@ -1,0 +1,34 @@
+---
+# tasks file for docker  
+- name: add docker repository
+  become: true
+  copy:
+    src: docker.repo
+    dest: /etc/yum.repos.d/docker.repo
+    mode: 0644
+
+- name: install docker engine
+  become: true
+  yum:
+    name: docker-engine-{{ docker_version }}
+    state: present
+
+- name: enable docker service
+  become: true
+  systemd:
+    name: docker
+    state: started
+    enabled: True
+
+- name: create docker group
+  become: true
+  group:
+    name: docker
+
+- name: add users in docker group
+  become: true
+  user:
+    name: "{{ item }}"
+    append: True
+    groups: docker
+  with_items: "{{ docker_users }}"

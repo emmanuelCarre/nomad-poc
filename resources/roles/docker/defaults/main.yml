@@ -1,0 +1,6 @@
+---
+# defaults file for docker
+docker_version: 1.12.3
+docker_users:
+    - vagrant
+docker_password:

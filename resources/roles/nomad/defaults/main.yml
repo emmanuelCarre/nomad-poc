@@ -1,0 +1,4 @@
+---
+# defaults file for nomad
+nomad_master: false
+nomad_version: 0.5.2
