@@ -12,6 +12,3 @@ Bellow, software list used to test nomadproject:
 * Ansible 2.2.0
 * Virtualbox 5.1.12
 * RAM: 5 Go for VMs
-
-
-
