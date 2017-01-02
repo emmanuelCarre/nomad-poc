@@ -49,4 +49,5 @@
     daemon_reload: yes
     name: nomad
     state: restarted
+    enabled: yes
   when: _nomad_service_config.changed 
