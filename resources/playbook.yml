@@ -12,8 +12,6 @@
     - role: docker
     - role: nomad
 
-# - hosts: masters
-#   vars:
-#     consul_version: 0.7.1
-#   tasks:
-#     - include: consul.yml
+- hosts: masters
+  roles:
+    - consul

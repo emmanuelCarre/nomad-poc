@@ -1,0 +1,19 @@
+{
+	"server": true,
+	"data_dir": "/tmp/consul",
+	"advertise_addr": "{{ ansible_ssh_host }}",
+	"addresses": {
+    	"http": "0.0.0.0"
+  	},
+	"ui": {{ consul_ui }},
+	"ui_dir": "/home/consul/www",
+	"acl_default_policy": "allow",
+{% if consul_bootstrap %}
+	"bootstrap_expect": 3
+{% endif %}
+{% if not consul_bootstrap %}
+	"bootstrap": false,
+	"start_join": [ {% for host in groups['masters'] %}{% if hostvars[host]['ansible_ssh_host'] != ansible_ssh_host %}{% if not loop.first %}, {% endif %}"{{ hostvars[host]['ansible_ssh_host'] }}"{% endif %}{% endfor %} ]
+{% endif %}
+}
+

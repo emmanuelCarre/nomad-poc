@@ -1,9 +1,21 @@
 ---
 # tasks file for consul
+- name: create consul user
+  become: true
+  user: 
+    name: consul
+    state: present
+
 - name: download consul
   get_url:
     url: "https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_linux_amd64.zip"
     dest: "/tmp/consul_{{ consul_version }}_linux_amd64.zip"
+
+- name: download consul UI
+  get_url:
+    url: "https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_web_ui.zip"
+    dest: "/tmp/consul_{{ consul_version }}_web_ui.zip"
+  when: consul_ui|bool
 
 - name: install consul
   become: true
@@ -12,9 +24,38 @@
     dest: /usr/local/bin/
     remote_src: true
 
-- name: create consul folders
+- name: create consul UI folder
+  become: true
+  become_user: consul
+  file:
+    path: /home/consul/www/
+    state: directory
+  when: consul_ui|bool
+  
+- name: install consul UI
+  become: true
+  become_user: consul
+  unarchive:
+    src: "https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_web_ui.zip"
+    dest: /home/consul/www/
+    remote_src: true
+    owner: consul
+    group: consul
+  when: consul_ui|bool
+
+- name: create configuration folder
   become: true
   file:
-    path: "{{ item }}"
-  with_items:
-    - /etc/consul.d/server
+    path: /etc/consul
+    state: directory
+    owner: consul
+    group: consul
+
+- name: add common server configuration
+  become: true
+  template:
+    src: basic_config.json
+    dest: /etc/consul/basic_config.json
+    owner: consul
+    group: consul
+  when: consul_server
