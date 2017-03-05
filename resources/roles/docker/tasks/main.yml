@@ -38,14 +38,15 @@
   copy:
     src: docker-options
     dest: /etc/sysconfig/docker
-
+  notify: docker - restart service
+  
 - name: add docker options
   become: true
   lineinfile:
     insertafter: '\[Service\]\n'
     line: "EnvironmentFile=/etc/sysconfig/docker"
     dest: /usr/lib/systemd/system/docker.service
-
+  notify: docker - restart service
 
 - name: add docker options
   become: true
@@ -53,4 +54,4 @@
     line: "ExecStart=/usr/bin/dockerd $OPTIONS"
     regexp: "^ExecStart="
     dest: /usr/lib/systemd/system/docker.service
-
+  notify: docker - restart service
