@@ -1,5 +1,5 @@
 {
-	"server": true,
+	"server": {{ consul_server }},
 	"data_dir": "/tmp/consul",
 	"advertise_addr": "{{ ansible_ssh_host }}",
 	"addresses": {
