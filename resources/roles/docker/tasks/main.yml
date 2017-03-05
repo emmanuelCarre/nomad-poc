@@ -32,3 +32,25 @@
     append: True
     groups: docker
   with_items: "{{ docker_users }}"
+
+- name: add docker options file
+  become: true
+  copy:
+    src: docker-options
+    dest: /etc/sysconfig/docker
+
+- name: add docker options
+  become: true
+  lineinfile:
+    insertafter: '\[Service\]\n'
+    line: "EnvironmentFile=/etc/sysconfig/docker"
+    dest: /usr/lib/systemd/system/docker.service
+
+
+- name: add docker options
+  become: true
+  lineinfile:
+    line: "ExecStart=/usr/bin/dockerd $OPTIONS"
+    regexp: "^ExecStart="
+    dest: /usr/lib/systemd/system/docker.service
+
