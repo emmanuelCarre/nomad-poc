@@ -9,9 +9,6 @@
   pre_tasks:
     - include: base.yml
   roles:
+    - role: consul
     - role: docker
     - role: nomad
-
-- hosts: masters
-  roles:
-    - consul
