@@ -1,1 +1,0 @@
-OPTIONS="-H unix:///var/run/docker.sock -H tcp://0.0.0.0:2375 --cluster-store=consul://localhost:8500 --cluster-advertise=eth1:2375"

@@ -35,7 +35,7 @@
 
 - name: add docker options file
   become: true
-  copy:
+  template:
     src: docker-options
     dest: /etc/sysconfig/docker
   notify: docker - restart service

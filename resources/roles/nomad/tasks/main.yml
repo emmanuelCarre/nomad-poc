@@ -50,4 +50,29 @@
     name: nomad
     state: restarted
     enabled: yes
-  when: _nomad_service_config.changed 
+  when: _nomad_service_config.changed
+
+- name: deploy nomad ui
+  become: true
+  get_url:
+    url: https://github.com/jippi/hashi-ui/releases/download/v0.13.1/hashi-ui-linux-amd64
+    dest: /usr/local/bin/hashi-ui
+    mode: 0744
+  when: nomad_ui
+
+- name: add service configuration for hashi-ui
+  become: true
+  register: _hashi_ui_service_config
+  copy:
+    src: hashi-ui.service
+    dest: /etc/systemd/system
+  when: nomad_ui
+
+- name: releod systemd configuration for hashi-ui
+  become: true
+  systemd:
+    daemon_reload: yes
+    name: hashi-ui
+    state: restarted
+    enabled: yes
+  when: _hashi_ui_service_config and nomad_ui

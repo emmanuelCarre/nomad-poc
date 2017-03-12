@@ -1,1 +1,2 @@
 consul_bootstrap: true
+nomad_ui: true
