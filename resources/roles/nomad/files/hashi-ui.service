@@ -5,6 +5,8 @@ Documentation=https://github.com/jippi/hashi-ui
 [Service]
 ExecStart=/usr/local/bin/hashi-ui --nomad-enable --consul-enable
 LimitNOFILE=65536
+Restart=on-failure
+RestartSec=10
 
 [Install]
 WantedBy=multi-user.target
