@@ -10,7 +10,7 @@ advertise {
 log_level = "DEBUG"
 
 # Setup data dir
-data_dir = "/tmp/nomad"
+data_dir = "{{ nomad_data_dir }}"
 
 # Enable the server
 server {

@@ -6,7 +6,7 @@ advertise {
     serf = "{{ ansible_ssh_host }}"
 }
 
-data_dir="/tmp/nomad"
+data_dir="{{ nomad_data_dir }}"
 
 client {
   enabled = true
