@@ -4,3 +4,4 @@ consul_version: 0.7.3
 consul_server: "false"
 consul_bootstrap: false
 consul_ui: "false"
+consul_data_dir: /var/lib/consul

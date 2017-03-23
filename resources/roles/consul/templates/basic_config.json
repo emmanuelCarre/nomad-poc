@@ -1,6 +1,6 @@
 {
 	"server": {{ consul_server }},
-	"data_dir": "/tmp/consul",
+	"data_dir": "{{ consul_data_dir }}",
 	"advertise_addr": "{{ ansible_ssh_host }}",
 	"addresses": {
     	"http": "0.0.0.0"
